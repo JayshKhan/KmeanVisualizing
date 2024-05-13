@@ -10,6 +10,29 @@ from sklearn.cluster import KMeans
 fig, ax = plt.subplots()
 
 
+def elbow_method(data):
+    # Elbow Method
+    ks = range(1, 6)
+    inertias = []
+    for k in ks:
+        # Create a KMeans instance with k clusters: model
+        model = KMeans(n_clusters=k)
+
+        # Fit model to samples
+        model.fit(data)
+
+        # Append the inertia to the list of inertias
+        inertias.append(model.inertia_)
+
+    # Plot ks vs inertias
+    fig1, ax1 = plt.subplots()
+    ax1.plot(ks, inertias, '-o')
+    ax1.set_xlabel('number of clusters, k')
+    ax1.set_ylabel('Cost/inertia')
+    ax1.set_title('Elbow Method')
+    # plt.show()
+
+
 def generate_data(num_points, num_features, min_value, max_value):
     data = []
     for _ in range(num_points):
@@ -40,7 +63,9 @@ def kmeans(data, num_clusters, max_iters):
             print("Converged")
             break
 
-        costs.append(sum([sum((point[i] - new_centroids[cluster][i]) ** 2 for i in range(len(point))) for cluster, points in enumerate(clusters) for point in points]))
+        costs.append(
+            sum([sum((point[i] - new_centroids[cluster][i]) ** 2 for i in range(len(point))) for cluster, points in
+                 enumerate(clusters) for point in points]))
 
         # animate the clusters with a pause between old and new centroids
         animate_kmeans(clusters, centroids, new_centroids)
@@ -71,7 +96,7 @@ def animate_kmeans(clusters, old_centroids, new_centroids):
     colors = ['r', 'g', 'b', 'c', 'm', 'y', 'k']
     for i, cluster in enumerate(clusters):
         # plot the old centroid of the cluster
-        ax.scatter(old_centroids[i][0], old_centroids[i][1], color=colors[i], marker='o', alpha=0.5, s=100)
+        ax.scatter(old_centroids[i][0], old_centroids[i][1], color=colors[i], marker='x', alpha=0.5, s=100)
         for point in cluster:
             ax.scatter(point[0], point[1], color=colors[i])
 
@@ -101,7 +126,6 @@ def animate_kmeans(clusters, old_centroids, new_centroids):
             ax.plot(cluster_points[simplex, 0], cluster_points[simplex, 1], color=colors[i])
 
 
-
 # Generate random data
 num_points = 50
 num_features = 2
@@ -112,33 +136,7 @@ data = generate_data(num_points, num_features, min_value, max_value)
 num_clusters = 3
 max_iters = 100
 
-
-def elbow_method(data, num_clusters):
-    # Elbow Method
-    ks = range(1, 6)
-    inertias = []
-    for k in ks:
-        # Create a KMeans instance with k clusters: model
-        model = KMeans(n_clusters=k)
-
-        # Fit model to samples
-        model.fit(data)
-
-        # Append the inertia to the list of inertias
-        inertias.append(model.inertia_)
-
-    # Plot ks vs inertias
-    fig1, ax1 = plt.subplots()
-    ax1.plot(ks, inertias, '-o')
-    ax1.set_xlabel('number of clusters, k')
-    ax1.set_ylabel('inertia')
-    ax1.set_title('Elbow Method')
-    # plt.show()
-
-
-
-
-elbow_method(data, num_clusters)
+elbow_method(data)
 
 # Run k-means clustering
 kmeans(data, num_clusters, max_iters)
