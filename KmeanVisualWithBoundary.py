@@ -4,6 +4,8 @@ from time import sleep
 import matplotlib.pyplot as plt
 import random
 
+from sklearn.cluster import KMeans
+
 # making fig global variables so that it should not be declared again and again
 fig, ax = plt.subplots()
 
@@ -109,6 +111,34 @@ data = generate_data(num_points, num_features, min_value, max_value)
 
 num_clusters = 3
 max_iters = 100
+
+
+def elbow_method(data, num_clusters):
+    # Elbow Method
+    ks = range(1, 6)
+    inertias = []
+    for k in ks:
+        # Create a KMeans instance with k clusters: model
+        model = KMeans(n_clusters=k)
+
+        # Fit model to samples
+        model.fit(data)
+
+        # Append the inertia to the list of inertias
+        inertias.append(model.inertia_)
+
+    # Plot ks vs inertias
+    fig1, ax1 = plt.subplots()
+    ax1.plot(ks, inertias, '-o')
+    ax1.set_xlabel('number of clusters, k')
+    ax1.set_ylabel('inertia')
+    ax1.set_title('Elbow Method')
+    # plt.show()
+
+
+
+
+elbow_method(data, num_clusters)
 
 # Run k-means clustering
 kmeans(data, num_clusters, max_iters)
