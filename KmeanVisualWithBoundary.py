@@ -19,6 +19,7 @@ def generate_data(num_points, num_features, min_value, max_value):
 def kmeans(data, num_clusters, max_iters):
     # Initialize centroids randomly
     centroids = random.sample(data, num_clusters)
+    costs = []
     print(centroids)
     for _ in range(max_iters):
         clusters = [[] for _ in range(num_clusters)]
@@ -37,11 +38,20 @@ def kmeans(data, num_clusters, max_iters):
             print("Converged")
             break
 
+        costs.append(sum([sum((point[i] - new_centroids[cluster][i]) ** 2 for i in range(len(point))) for cluster, points in enumerate(clusters) for point in points]))
+
         # animate the clusters with a pause between old and new centroids
         animate_kmeans(clusters, centroids, new_centroids)
         sleep(1)
         centroids = new_centroids
 
+    # plot costs array
+    plt.figure()
+    plt.plot(costs)
+    plt.title("Costs")
+    plt.xlabel("Iterations")
+    plt.ylabel("Cost")
+    plt.show()
 
 
 def animate_kmeans(clusters, old_centroids, new_centroids):
