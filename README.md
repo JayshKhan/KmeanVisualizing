@@ -59,7 +59,7 @@ pip install matplotlib scipy
 4. Visualize the clustering process.
 
 ```sh
-python3 kmean_visualilzing_without_boundary.py
+python3 kmean_visualizing_without_boundary.py
 
 python3 kmean_visualilzing_with_boundary.py
 
