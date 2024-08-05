@@ -118,6 +118,8 @@ def animate_kmeans(clusters, old_centroids, new_centroids):
             ax.scatter(point[0], point[1], color=colors[i])
 
 
+# Program entry point
+
 if __name__ == "__main__":
     # Generate random data
     num_points = 50

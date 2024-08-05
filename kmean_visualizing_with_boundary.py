@@ -177,7 +177,7 @@ def animate_kmeans(clusters, old_centroids, new_centroids):
 
 if __name__ == "__main__":
     # Generate random data
-    num_points = 50
+    num_points = 100
     num_features = 2
     min_value = 0
     max_value = 10
